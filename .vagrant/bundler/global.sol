@@ -1,0 +1,1 @@
+{"dependencies":[["vagrant-hostmanager",["= 1.8.10"]],["vagrant-winnfsd",["= 1.4.0"]]],"checksum":"cfa6bc509b0f91446fea04ebae5b7df2717dc6e983d492f801cf1e71ded4d04b","vagrant_version":"2.4.1"}
