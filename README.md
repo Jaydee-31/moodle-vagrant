@@ -40,7 +40,7 @@ Change the following lines:
 
 Save and close the file then restart the PHP-FPM service to apply the changes:
 
-    > sudo systemctl restart php7.4-fpm
+    > sudo systemctl restart php8.0-fpm
 
 Once you are finished, you can proceed to the next step.
 
@@ -131,7 +131,7 @@ Add the following lines:
 
         location ~ [^/].php(/|$) {
             include snippets/fastcgi-php.conf;
-            fastcgi_pass unix:/run/php/php7.4-fpm.sock;
+            fastcgi_pass unix:/run/php/php8.0-fpm.sock;
             fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
             include fastcgi_params;
         }
