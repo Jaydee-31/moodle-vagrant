@@ -16,7 +16,7 @@ The Open LMS development box has the following technologies installed:
 
 To install and use this project:
 
-1. Clone this project: `git clone https://github.com/Jaydee-31/moodle-vagrant.git ~/vagrant`
+1. Clone this project: `git clone https://github.com/Jaydee-31/moodle-vagrant.git`
 2. Install recommended versions of [Vagrant and VirtualBox](https://developer.hashicorp.com/vagrant/install#windows).
 3. Install Vagrant Host Manager Plugin: `vagrant plugin install vagrant-hostmanager`
 4. Open your terminal and from within this project, run: `vagrant up`
