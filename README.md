@@ -1,6 +1,6 @@
 # Introduction
 
-This project serves as an example of [How to Install Moodle on Ubuntu 20.04 with Nginx](https://linux.how2shout.com/how-to-install-moodle-on-ubuntu-20-04-with-nginx/?fbclid=IwAR190M_gwv7u0ZqxFEnN5hDJdmvA7skN8rROBFaIwzCKxSddm7QzKhWeIX8).
+This project serves as an updated example of [How to Install Moodle 4.3 on Ubuntu 20.04 with Nginx](https://linux.how2shout.com/how-to-install-moodle-on-ubuntu-20-04-with-nginx/?fbclid=IwAR190M_gwv7u0ZqxFEnN5hDJdmvA7skN8rROBFaIwzCKxSddm7QzKhWeIX8).
 
 # Overview of the box
 
@@ -9,7 +9,7 @@ The Open LMS development box has the following technologies installed:
 - Ubuntu is the operating system
 - Nginx with PHP-FPM
 - PHP 8.0
-- MariaDB
+- MariaDB 10.6
 - And other various tools required by Moodle.
 
 # Vagrant install
@@ -17,7 +17,7 @@ The Open LMS development box has the following technologies installed:
 To install and use this project:
 
 1. Clone this project: `git clone https://github.com/Jaydee-31/moodle-vagrant.git`
-2. Install recommended versions of [Vagrant and VirtualBox](https://developer.hashicorp.com/vagrant/install#windows).
+2. Install recommended versions of [Vagrant](https://developer.hashicorp.com/vagrant/install#windows) and [VirtualBox](https://www.virtualbox.org/).
 3. Install Vagrant Host Manager Plugin: `vagrant plugin install vagrant-hostmanager`
 4. Open your terminal and from within this project, run: `vagrant up`
 
@@ -41,8 +41,8 @@ The version of PHP available through the default repository of Ubuntu is 7.4, ho
 
 However, for the latest version of the PHP, we need to add an extra repository.
 
-    sudo apt install software-properties-common
-    sudo add-apt-repository ppa:ondrej/php
+    > sudo apt install software-properties-common
+    > sudo add-apt-repository ppa:ondrej/php
 
 Install PHP 8.0 and extensions:
 
@@ -77,11 +77,16 @@ Restart the PHP-FPM service to apply the changes:
 
 Once you are finished, you can proceed to the next step.
 
-# Create Moodle Database (MariaDB)
-
-We can install MySQL, however, here we are using MariaDB (fork) which is one best open-source database servers. It is available to install using the default system repository of Ubuntu 20.04. Hence, just run the given command:
+# Install MariaDB
 
 Moodle uses a MySQL or MariaDB as a database backend so you will need to create a database and user for Moodle.
+
+    > sudo apt-key adv --fetch-keys 'https://mariadb.org/mariadb_release_signing_key.asc'
+    sudo add-apt-repository 'deb [arch=amd64,arm64,ppc64el] http://nyc2.mirrors.digitalocean.com/mariadb/repo/10.6/ubuntu focal main'
+
+    > sudo apt update
+
+    > sudo apt install -y mariadb-server
 
     > sudo apt install mariadb-server
 
@@ -147,11 +152,11 @@ Save the file then restart the MariaDB service to apply the changes:
 
 ---
 
-    wget https://download.moodle.org/download.php/direct/stable403/moodle-latest-403.tgz
+    sudo wget https://download.moodle.org/download.php/direct/stable403/moodle-latest-403.tgz
 
 Extract the download file
 
-    tar xzf moodle-latest-403.tgz
+    sudo tar xzf moodle-latest-403.tgz
 
 # Moodle configuration
 
@@ -224,4 +229,4 @@ Finally, restart the Nginx service to apply the changes:
 
 # Access Moodle Web Interface
 
-Now, open your web browser and access the Moodle web interface using the URL <192.168.0.17>. You should see the Moodle installation page:
+Now, open your web browser and access the Moodle web interface using the URL [192.168.0.17](http://192.168.0.17/). You should see the Moodle installation page:
