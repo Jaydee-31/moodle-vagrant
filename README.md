@@ -23,13 +23,44 @@ To install and use this project:
 
 After the `vagrant up` command completes, your virtual machine will be ready. You can use `vagrant ssh` to access it.
 
-# Vagrant updates
+# Update Ubuntu 20.04
+
+Start with updating the system to install the latest available updates and refresh the APT package index cache.
+
+    sudo apt update
+
+# Install Nginx and PHP
+
+Let’s install the Nginx web server which we require to serve the files and PHP programming language to run Moodle because it has been developed in it.
+
+    sudo apt install nginx-full
+
+# Setup PHP 8.x on Ubuntu 20.04
+
+The version of PHP available through the default repository of Ubuntu is 7.4, however, here we are installing PHP 8.0 so that future versions of Moodle won’t create problems.
+
+However, for the latest version of the PHP, we need to add an extra repository.
+
+    sudo apt install software-properties-common
+    sudo add-apt-repository ppa:ondrej/php
+
+Install PHP 8.0 and extensions:
+
+    sudo apt install php8.0 php8.0-{fpm,common,mbstring,xmlrpc,soap,gd,xml,intl,mysql,cli,mcrypt,ldap,zip,curl}
+
+To check the version:
+
+    php -v
 
 Edit the php.ini file and change some settings:
 
     > sudo nano /etc/php/8.0/fpm/php.ini
 
+Note: If you are using the default version of PHP or any other then change 8.0 with that in the above command.
+
 Change the following lines:
+
+    //also don’t forget to remove the semicolon (;) given in front of max_input_vars.
 
     memory_limit = 256M
     cgi.fix_pathinfo = 0
@@ -38,19 +69,48 @@ Change the following lines:
     date.timezone = Asia/Singapore
     max_input_vars = 5000
 
-Save and close the file then restart the PHP-FPM service to apply the changes:
+After making the changes save the file by pressing Ctrl+O, hit the Enter key, and then exit Ctrl+X.
+
+Restart the PHP-FPM service to apply the changes:
 
     > sudo systemctl restart php8.0-fpm
 
 Once you are finished, you can proceed to the next step.
 
-# Create the database
+# Create Moodle Database (MariaDB)
+
+We can install MySQL, however, here we are using MariaDB (fork) which is one best open-source database servers. It is available to install using the default system repository of Ubuntu 20.04. Hence, just run the given command:
 
 Moodle uses a MySQL or MariaDB as a database backend so you will need to create a database and user for Moodle.
 
+    > sudo apt install mariadb-server
+
+Secure your Database server by setting up the root DB user password and removing anonymous rights.
+
+    > sudo mysql_secure_installation
+
+Here are the questions the setup will ask.
+
+    #press the Enter key
+    Enter current password for root (enter for none):
+    #Press Y and type the password you want to set two times.
+    Set root password? [Y/n] Y
+    Remove anonymous users? [Y/n] Y
+    Disallow root login remotely? [Y/n] Y
+    Remove test database and access to it? [Y/n] Y
+    Reload privilege tables now? [Y/n] Y
+
+# Create a Database and user for Moodle
+
+Once the installation is completed, let’s create a dedicated database for Moodle to use and save the data.
+
 First, connect to the MySQL shell with the following command:
 
-    > sudo mysql
+    > sudo mysql -u root -p
+
+[//]: <> (> sudo mysql)
+
+Use the password you have set for it in the previous step.
 
 Once login, create a database and user with the following command:
 
@@ -81,9 +141,21 @@ Save the file then restart the MariaDB service to apply the changes:
 
     > sudo systemctl restart mariadb
 
+# Download Moodle 4.3
+
+    cd /var/www/html
+
+---
+
+    wget https://download.moodle.org/download.php/direct/stable403/moodle-latest-403.tgz
+
+Extract the download file
+
+    tar xzf moodle-latest-403.tgz
+
 # Moodle configuration
 
-Edit the Moodle config.php and define the database type:
+Once the download is completed, edit the Moodle config.php and define the database type:
 
     > sudo nano /var/www/html/moodle/config-dist.php
 
